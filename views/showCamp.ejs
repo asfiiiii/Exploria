@@ -1,0 +1,160 @@
+<% layout("../layout/boilerplate") %> 
+
+
+
+
+
+
+    <div class="row">
+        <div class="col-6">
+            <div class="card mt-4 mb-3">
+
+                <div id="map" style=" width: 100% ; height: 300px;"></div>
+
+                <div id="carouselExample" class="carousel slide">
+                    <div class="carousel-inner">
+                
+                     <% camp.images.forEach((img,i) => { %>
+
+                      <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+                        <img src="<%=img.url%>" class="d-block w-100" alt="">
+                      </div>
+                      <% }) %>
+                    </div>
+
+                    <% if(camp.images.length > 1) { %>
+
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Next</span>
+                    </button>
+
+                    <% } %>
+                  </div>
+                
+
+                <div class="card-body">
+                    <h5 class="card-title"><%= camp.title%></h5>
+                    <p class="card-text"><%= camp.description%></p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item text-muted"><%= camp.location%></li>
+                    <li class="list-group-item"> ~ <%= camp.author.username%></li>
+
+                    <li class="list-group-item">$<%= camp.price%>/night</li>
+                </ul>
+
+                <% if( loggedUser && camp.author.equals(loggedUser._id) ) { %>
+
+                <div class="card-body">
+                    <a class="card-link btn btn-info" href="/campgrounds/<%=camp._id%>/edit">Edit</a>
+                    <form class="d-inline" action="/campgrounds/<%=camp._id%>?_method=DELETE" method="POST">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+              
+                <% } %>
+
+                <div class="card-footer text-muted">
+                    2 days ago
+                </div>
+            </div>
+
+            
+
+            
+        </div>
+
+        <div class="col-6 mt-4  mb-3">
+
+            <% if(loggedUser) { %>
+
+            <form action="/campgrounds/<%= camp._id %>/reviews" method="post" novalidate class="require-validation">
+
+                <h3>Leave a Review</h3>
+                <div class=" my-3">
+
+                    <label class="form-label" for="rating"> <b>Rating</b></label>
+                    <input class="form-range" type="range" min="1" max="10" name="review[rating]">
+    
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="body"><b>Review</b></label>
+                    <textarea class="form-control" name="review[body]" id="body" cols="30" rows="4" required></textarea>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please enter Title!
+                      </div>
+                
+                </div>
+                
+                <button class=" mb-4 btn btn-success">Submit</button>
+            </form>
+
+            <% } %>
+
+
+            <h2 >
+                
+              
+                    Reviews: </h2>
+                    
+                <% for(let rev of camp.review) {%>
+    
+                    <div class="card mt-4  mb-3">
+
+                    <div class="card-body ">
+
+                        <h5 class="card-title"> Rating: <%= rev.rating %></h5>
+                       
+
+
+
+                        <h6 class="card-subtitle text-muted mb-2"> Author: <%= rev.author.username %></h6>
+
+
+                        <p class="card-text">
+                            Review: <%= rev.body %>
+                        </p>
+                        <% if( loggedUser && rev.author.equals(loggedUser._id) ) { %>
+
+
+                        <form action="/campgrounds/<%=camp._id %>/reviews/<%=rev._id%>?_method=DELETE" method="post">
+                        
+                            <button class=" btn btn-danger">Delete</button>
+
+                        </form>
+
+                        <% } %>
+
+                    </div>
+                    
+                </div>
+    
+                <% } %>
+
+
+
+            
+        
+            </div>
+            
+        
+    
+    </div>
+
+     <script>                 
+     
+        const token = '<%- process.env.MAPBOX_TOKEN %>';
+        const campCord = <%-JSON.stringify(camp)%>;
+
+    </script>
+
+    <script src="/javascripts/mapbox.js"></script>

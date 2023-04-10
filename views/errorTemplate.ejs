@@ -1,0 +1,37 @@
+
+<% layout("../layout/boilerplate") %> 
+
+
+<div class="row">
+    <div class="col-6 offset-3">
+
+
+        <div class="alert alert-danger mt-5" role="alert">
+            <h4 class="alert-heading"> <%= err.message %></h4>
+            <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+            <hr>
+
+            <p>
+                <b> Error Stack: </b>
+                <br>
+
+                <% if(process.env.NODE_ENV !=="production") { %>
+                <%= err.stack %>
+
+                <% } %>
+                
+
+
+            </p>
+
+            <div>
+                
+                <h5>
+                    <b> Thankyou !</b>
+                </h5>
+            </div>
+          </div>
+          
+
+    </div>
+</div>
