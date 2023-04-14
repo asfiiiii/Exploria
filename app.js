@@ -29,7 +29,7 @@ const mongoStore = require('connect-mongo'); // this is for storing our session 
 
 // mongoose requirments 
 mongoose.set('strictQuery', true);
-mongoose.connect('mongodb://127.0.0.1:27017/yelpcamp', {useNewUrlParser: true, useUnifiedTopology:true})    
+mongoose.connect('mongodb+srv://asfarma2815:JpN30YkQv6EaTdjZ@cluster0.0gb0gcb.mongodb.net/?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology:true})    
 .then(()=>{
     console.log("Mongoose Connected !!");
 
@@ -49,7 +49,7 @@ app.engine("ejs",ejsMate); //used for making layouts
 
 app.use(express.urlencoded({ extended: true})); // used for fetching the incoming data form HTML forms
 
-app.set("view engine","ejs"); // Requuire for using Ejs
+app.set("view engine","ejs"); // Require for using Ejs
 
 app.use(express.static("public"));
 
@@ -57,7 +57,7 @@ app.use(sanitize({ replaceWith:'_' }));
 
 
 const store = mongoStore.create({
-        mongoUrl:'mongodb://127.0.0.1:27017/yelpcamp',
+        mongoUrl:'mongodb+srv://asfarma2815:JpN30YkQv6EaTdjZ@cluster0.0gb0gcb.mongodb.net/?retryWrites=true&w=majority',
         secret:"hehe",
         touchAfter: 24 * 60 * 60,
         collection:'sessions'
